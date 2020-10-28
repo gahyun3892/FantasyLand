@@ -4,8 +4,20 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class LookItem : MonoBehaviour
+public class LookItem : MonoBehaviour, IPointerEnterHandler,
+       IPointerExitHandler, IGvrPointerHoverHandler
 {
+    private Animator anim;
+    private readonly int hashIsOpen = Animator.StringToHash("IsOpen");
+
+    void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
+    public void OnBoxOpen(bool isOpen)
+    {
+        anim.SetBool(hashIsOpen, isOpen);
+    }
 
     public void OnLookItemBox(bool isLookAt)
         {
@@ -13,12 +25,12 @@ public class LookItem : MonoBehaviour
         MoveCtrl.isStopped = isLookAt;
         }
 
-    public void OnPosterEnter(PointerEventData eventData)
+    public void OnPointerEnter(PointerEventData eventData)
     {
         MoveCtrl.isStopped = true;
     }
 
-    public void OnPosterExit(PointerEventData eventData)
+    public void OnPointerExit(PointerEventData eventData)
     {
         MoveCtrl.isStopped = false;
     }
